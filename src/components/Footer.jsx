@@ -50,9 +50,18 @@ const Footer = () => {
       </div>
 
       {/* Bottom */}
-      <div className="mt-10 border-t border-[#553832] pt-6 text-center text-sm text-gray-400">
-        © {new Date().getFullYear()} DevCrafters. All rights reserved.
+      <div className="mt-10 border-t border-[#553832] pt-6 text-center text-sm text-gray-400 space-y-1">
+        <div>© {new Date().getFullYear()} DevCrafters. All rights reserved.</div>
+        <div className="space-x-4">
+          <a href="/privacy-policy" className="hover:text-[#FF725E] transition underline">
+            Privacy Policy
+          </a>
+          <a href="/terms" className="hover:text-[#FF725E] transition underline">
+            Terms of Service
+          </a>
+        </div>
       </div>
+
     </footer>
   );
 };

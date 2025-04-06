@@ -10,6 +10,8 @@ const ContactPage = lazy(() => import("./pages/ContactPage"));
 const ThankYouPage = lazy(() => import("./pages/ThankYouPage"));
 const NotFoundPage = lazy(() => import("./pages/NotFoundPage"));
 const MainLayout = lazy(() => import("./Layout/MainLayout"));
+const PrivacyPolicyPage = lazy(() => import("./pages/PrivacyPolicyPage"))
+const TermsPage = lazy(() => import("./pages/TermsPage"))
 
 function App() {
   return (
@@ -35,6 +37,8 @@ function App() {
             <Route path="/services" element={<ServicesPage />} />
             <Route path="/contact" element={<ContactPage />} />
             <Route path="/thank-you" element={<ThankYouPage />} />
+            <Route path="/privacy-policy" element={<PrivacyPolicyPage />} />
+            <Route path="/terms" element={<TermsPage />} />
             <Route path="*" element={<NotFoundPage />} />
           </Route>
         </Routes>
