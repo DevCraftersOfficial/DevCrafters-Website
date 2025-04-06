@@ -22,11 +22,10 @@ const Navbar = () => {
     : "text-[#331b18] hover:text-[#FF725E]";
 
   return (
-    <nav
-      className={`fixed w-full z-50 transition-all duration-300 ${
-        scrolled ? "bg-[#FF725E] shadow-md" : "bg-transparent"
-      }`}
-    >
+    <nav className={`fixed w-full z-50 transition-all duration-300 ${
+      scrolled || isOpen ? "bg-[#FF725E] shadow-md" : "bg-transparent"
+    }`}>
+    
       <div className="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
         {/* Logo */}
         <NavLink to="/" className="flex items-center space-x-2">

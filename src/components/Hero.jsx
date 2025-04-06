@@ -26,23 +26,24 @@ const Hero = () => {
           </p>
 
           <div
-            className="flex justify-center md:justify-start space-x-4"
+            className="flex flex-col md:flex-row justify-center md:justify-start space-y-4 md:space-y-0 md:space-x-4"
             data-aos="fade-up"
             data-aos-delay="400"
-          >
+            >
             <a
               href="/contact"
-              className="bg-[#FF725E] text-white px-6 py-3 rounded-full font-semibold hover:bg-[#e85b49] transition-all"
+              className="bg-[#FF725E] text-white px-6 py-3 rounded-full font-semibold hover:bg-[#e85b49] transition-all text-center"
             >
               Get a Quote
             </a>
             <a
               href="/services"
-              className="border border-[#FF725E] text-[#FF725E] px-6 py-3 rounded-full font-semibold hover:bg-[#ffece9] transition-all"
+              className="border border-[#FF725E] text-[#FF725E] px-6 py-3 rounded-full font-semibold hover:bg-[#ffece9] transition-all text-center"
             >
               Explore Services
             </a>
           </div>
+
         </div>
 
         {/* Right Image or Illustration */}
@@ -55,6 +56,10 @@ const Hero = () => {
             src={heroIllustration}
             alt="DevCrafters illustration"
             className="w-full max-w-md"
+            width="600"
+            height="450"
+            loading="lazy"
+            decoding="async"
           />
         </div>
       </div>
