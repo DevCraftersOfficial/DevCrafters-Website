@@ -30,7 +30,14 @@ const Navbar = () => {
       <div className="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
         {/* Logo */}
         <NavLink to="/" className="flex items-center space-x-2">
-          <img src={logo} alt="DevCrafters Logo" className="h-10 w-auto" />
+          <img
+            src={logo}
+            alt="DevCrafters Logo"
+            className="h-10 w-auto"
+            loading="eager" 
+            decoding="async"
+            fetchpriority="high"
+          />
           <span
             className={`font-bold text-xl tracking-wide hidden sm:inline ${
               scrolled ? "text-white" : "text-[#331b18]"
@@ -39,6 +46,7 @@ const Navbar = () => {
             DevCrafters
           </span>
         </NavLink>
+
 
         {/* Desktop Menu */}
         <div className="hidden md:flex items-center space-x-10">
