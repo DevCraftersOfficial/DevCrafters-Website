@@ -25,7 +25,13 @@
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
-    <url>
+  <url>
+    <loc>https://devcrafters.in/blog</loc>
+    <lastmod>2025-04-12</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
     <loc>https://devcrafters.in/privacy-policy</loc>
     <changefreq>yearly</changefreq>
     <priority>0.5</priority>
