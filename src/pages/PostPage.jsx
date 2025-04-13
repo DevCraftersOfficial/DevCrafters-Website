@@ -39,16 +39,15 @@ const components = {
       </div>
     ),
     image: ({ value }) => {
-        
-        const imageUrl = urlFor(value.asset)?.url();
-        return (
-          <img
-            src={imageUrl}
-            alt={value?.alt || 'Image'}
-            className="rounded-xl shadow-md my-6 max-w-full"
-          />
-        );
-      },
+      const imageUrl = urlFor(value.asset)?.url();
+      return (
+        <img
+          src={imageUrl}
+          alt={value?.alt || "Image"}
+          className="rounded-xl shadow-md my-6 max-w-full"
+        />
+      );
+    },
     callout: ({ value }) => (
       <div
         className={`border-l-4 p-4 my-4 rounded-lg ${
@@ -63,7 +62,9 @@ const components = {
     ),
     collapsible: ({ value }) => (
       <details className="my-4 rounded-lg border border-gray-300 p-4">
-        <summary className="cursor-pointer font-semibold">{value.title}</summary>
+        <summary className="cursor-pointer font-semibold">
+          {value.title}
+        </summary>
         <div className="mt-2 text-sm">{value.body}</div>
       </details>
     ),
@@ -87,23 +88,67 @@ const components = {
   },
   block: {
     h2: ({ children }) => {
-      const rawText = children.map((c) => (typeof c === "string" ? c : c?.props?.children ?? "")).join(" ");
+      const rawText = children
+        .map((c) => (typeof c === "string" ? c : c?.props?.children ?? ""))
+        .join(" ");
       const id = slugify(String(rawText), { lower: true, strict: true });
-      return <h2 id={id} className="text-2xl font-bold mt-12 scroll-mt-20">{children}</h2>;
+      return (
+        <h2 id={id} className="text-3xl font-bold mt-14 mb-2 scroll-mt-20 text-gray-800">
+          {children}
+        </h2>
+      );
     },
     h3: ({ children }) => {
-      const rawText = children.map((c) => (typeof c === "string" ? c : c?.props?.children ?? "")).join(" ");
+      const rawText = children
+        .map((c) => (typeof c === "string" ? c : c?.props?.children ?? ""))
+        .join(" ");
       const id = slugify(String(rawText), { lower: true, strict: true });
-      return <h3 id={id} className="text-xl font-semibold mt-10 scroll-mt-20">{children}</h3>;
+      
+      return (
+        <h3 
+          id={id} 
+          className="text-4xl font-bold text-gray-900 mt-10 mb-6 scroll-mt-16 tracking-tight leading-snug relative"
+        >
+          <a 
+            href={`#${id}`} 
+            className="relative z-10 hover:text-gray-600 transition-all duration-300 ease-in-out"
+          >
+            {children}
+          </a>
+        </h3>
+      );
     },
+    
+    normal: ({ children }) => (
+      <p className="text-lg leading-relaxed text-gray-800 mb-4">{children}</p>
+    ),
+    blockquote: ({ children }) => (
+      <blockquote className="border-l-4 border-gray-400 pl-4 italic text-gray-700 my-4 leading-relaxed">
+        {children}
+      </blockquote>
+    ),
+    ul: ({ children }) => (
+      <ul className="list-disc pl-6 my-4 space-y-2 text-gray-800 leading-relaxed">
+        {children}
+      </ul>
+    ),
+    ol: ({ children }) => (
+      <ol className="list-decimal pl-6 my-4 space-y-2 text-gray-800 leading-relaxed">
+        {children}
+      </ol>
+    ),
+    li: ({ children }) => <li>{children}</li>,
   },
+  
   marks: {
     strong: ({ children }) => <strong className="font-bold">{children}</strong>,
     em: ({ children }) => <em className="italic">{children}</em>,
     underline: ({ children }) => <u>{children}</u>,
     "strike-through": ({ children }) => <s>{children}</s>,
     code: ({ children }) => (
-      <code className="bg-gray-200 px-1 py-0.5 rounded text-sm font-mono">{children}</code>
+      <code className="bg-gray-200 px-1 py-0.5 rounded text-sm font-mono">
+        {children}
+      </code>
     ),
     link: ({ value, children }) => (
       <a
@@ -123,7 +168,10 @@ const PostPage = () => {
   const [post, setPost] = useState(null);
   const [toc, setToc] = useState([]);
   const [readingTime, setReadingTime] = useState(0);
-  const [adjacentPosts, setAdjacentPosts] = useState({ prev: null, next: null });
+  const [adjacentPosts, setAdjacentPosts] = useState({
+    prev: null,
+    next: null,
+  });
 
   useEffect(() => {
     AOS.init({ once: true, duration: 1000 });
@@ -148,7 +196,11 @@ const PostPage = () => {
         const tocItems = result.body
           .filter((block) => ["h2", "h3"].includes(block.style))
           .map((block) => {
-            const text = block.children?.map((child) => child?.text || "").join(" ").trim() || "heading";
+            const text =
+              block.children
+                ?.map((child) => child?.text || "")
+                .join(" ")
+                .trim() || "heading";
             return {
               text,
               level: block.style,
@@ -210,8 +262,14 @@ const PostPage = () => {
   if (!post) {
     return (
       <div className="flex flex-col justify-center items-center h-screen w-full bg-white">
-        <img src={logo} alt="DevCrafters" className="h-32 w-32 animate-bounce" />
-        <p className="mt-4 text-gray-800 text-md animate-pulse">Crafting your experience...</p>
+        <img
+          src={logo}
+          alt="DevCrafters"
+          className="h-32 w-32 animate-bounce"
+        />
+        <p className="mt-4 text-gray-800 text-md animate-pulse">
+          Crafting your experience...
+        </p>
       </div>
     );
   }
@@ -220,11 +278,24 @@ const PostPage = () => {
     <>
       <Helmet>
         <title>{post.title} | DevCrafters Blogs</title>
-        <meta name="description" content={post.excerpt || "Read this article from DevCrafters"} />
+        <meta name="description" content={post.excerpt || post.title} />
+        <meta name="author" content={post.authorName} />
+        <meta
+          name="keywords"
+          content={`DevCrafters, blog, ${post.title.split(" ").join(", ")}`}
+        />
         <meta property="og:title" content={post.title} />
-        <meta property="og:description" content={post.excerpt || "Read this article from DevCrafters"} />
+        <meta property="og:description" content={post.excerpt || post.title} />
         <meta property="og:image" content={post.mainImage?.asset?.url} />
-        <meta property="og:url" content={`https://devcrafters.in/post/${post.slug.current}`} />
+        <meta property="og:type" content="article" />
+        <meta
+          property="og:url"
+          content={`https://devcrafters.in/post/${post.slug.current}`}
+        />
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content={post.title} />
+        <meta name="twitter:description" content={post.excerpt || post.title} />
+        <meta name="twitter:image" content={post.mainImage?.asset?.url} />
       </Helmet>
 
       <section className="min-h-screen bg-gradient-to-b from-white via-[#fff3ef] to-[#ffece9] px-6 py-24 md:px-20 text-[#331b18] relative">
@@ -235,11 +306,13 @@ const PostPage = () => {
               <img
                 src={post.mainImage.asset.url}
                 alt={post.mainImage.alt || post.title}
-                className="w-full h-64 md:h-96 object-cover rounded-2xl mb-8 shadow-lg"
+                className="w-full h-64 md:h-96 object-fit rounded-2xl mb-8 shadow-lg"
               />
             )}
 
-            <h1 className="text-4xl md:text-5xl font-extrabold leading-tight mb-4">{post.title}</h1>
+            <h1 className="text-4xl md:text-5xl font-extrabold leading-tight mb-4">
+              {post.title}
+            </h1>
 
             <div className="flex items-center gap-4 mb-6 text-sm text-gray-600">
               {post.authorImage && (
@@ -250,24 +323,42 @@ const PostPage = () => {
                 />
               )}
               <div>
-                <p className="font-semibold">{post.authorName || "DevCrafters"}</p>
-                <p>{new Date(post.publishedAt).toLocaleDateString()} • {readingTime} min read</p>
+                <p className="font-semibold">
+                  {post.authorName || "DevCrafters"}
+                </p>
+                <p>
+                  {new Date(post.publishedAt).toLocaleDateString()} •{" "}
+                  {readingTime} min read
+                </p>
               </div>
             </div>
 
-            <div className="prose prose-lg max-w-none prose-img:rounded-xl prose-a:text-blue-600">
+            <div >
               <PortableText value={post.body} components={components} />
             </div>
 
             {/* CTA */}
             <div className="mt-16 p-6 bg-orange-100 rounded-xl text-center">
-              <h3 className="text-2xl font-semibold mb-2">Enjoyed this post?</h3>
-              <p className="mb-4">Explore more insights or get in touch to build something amazing!</p>
-              <Link to="/contact" className="bg-orange-500 text-white px-4 py-2 rounded hover:bg-orange-600">
+              <h3 className="text-2xl font-semibold mb-2">
+                Enjoyed this post?
+              </h3>
+              <p className="mb-4">
+                Explore more insights or get in touch to build something
+                amazing!
+              </p>
+              <Link
+                to="/contact"
+                className="bg-orange-500 text-white px-4 py-2 rounded hover:bg-orange-600"
+              >
                 Contact DevCrafters
               </Link>
             </div>
-            <Link to="/blog" className="text-orange-600 text-sm hover:underline my-4 inline-block">← Back to Blog</Link>
+            <Link
+              to="/blog"
+              className="text-orange-600 text-sm hover:underline my-4 inline-block"
+            >
+              ← Back to Blog
+            </Link>
 
             {/* Author Bio */}
             <div className="mt-16 border-t pt-6 flex items-center gap-4">
@@ -280,32 +371,53 @@ const PostPage = () => {
               )}
               <div>
                 <p className="text-lg font-bold">{post.authorName}</p>
-                <p className="text-sm text-gray-600">{ post.authorBio ? post.authorBio : <span>Tech enthusiast, creator, and writer at DevCrafters.</span> }</p>
+                <p className="text-sm text-gray-600">
+                  {post.authorBio ? (
+                    post.authorBio
+                  ) : (
+                    <span>
+                      Tech enthusiast, creator, and writer at DevCrafters.
+                    </span>
+                  )}
+                </p>
               </div>
             </div>
 
             {/* Prev/Next */}
             <div className="mt-12 flex justify-between text-sm">
               {adjacentPosts.prev ? (
-                <Link to={`/post/${adjacentPosts.prev.slug.current}`} className="text-orange-600 hover:underline">
+                <Link
+                  to={`/post/${adjacentPosts.prev.slug.current}`}
+                  className="text-orange-600 hover:underline"
+                >
                   ← {adjacentPosts.prev.title}
                 </Link>
-              ) : <span />}
+              ) : (
+                <span />
+              )}
               {adjacentPosts.next ? (
-                <Link to={`/post/${adjacentPosts.next.slug.current}`} className="text-orange-600 hover:underline">
+                <Link
+                  to={`/post/${adjacentPosts.next.slug.current}`}
+                  className="text-orange-600 hover:underline"
+                >
                   {adjacentPosts.next.title} →
                 </Link>
-              ) : <span />}
+              ) : (
+                <span />
+              )}
             </div>
           </div>
 
           {/* TOC Sidebar */}
           {toc.length > 0 && (
-            <aside className="lg:w-1/4 sticky top-32 self-start bg-white shadow p-4 rounded-xl border border-gray-200 h-fit">
+            <aside className="lg:w-1/4 sticky top-32 self-start bg-white shadow p-4 rounded-xl border border-gray-200 h-fit hidden lg:block">
               <h2 className="text-lg font-bold mb-3">On this page</h2>
               <ul className="text-sm space-y-2">
                 {toc.map((item) => (
-                  <li key={item.id} className={`ml-${item.level === "h3" ? "4" : "0"}`}>
+                  <li
+                    key={item.id}
+                    className={`ml-${item.level === "h3" ? "4" : "0"}`}
+                  >
                     <a
                       href={`#${item.id}`}
                       onClick={(e) => {
@@ -334,7 +446,12 @@ const PostPage = () => {
               title={`Share on ${platform}`}
               className="hover:opacity-80 transition"
             >
-              <img src={`/icons/${platform}.svg`} alt={platform} className="w-6 h-6" aria-label={`Share on ${platform}`} />
+              <img
+                src={`/icons/${platform}.svg`}
+                alt={platform}
+                className="w-6 h-6"
+                aria-label={`Share on ${platform}`}
+              />
             </a>
           ))}
         </div>
